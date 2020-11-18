@@ -3,6 +3,7 @@ import s from './Dialogs.module.css';
 import {NavLink} from "react-router-dom";
 
 const Dialogs = () => {
+
     return (
         <div className={s.dialogs}>
             <div className={s.dialogsItem}>
