@@ -68,6 +68,7 @@ export const updateNewPostText = (newText: any) => {
 export const subscribe = (observer: any) => {
     renderEntireTree = observer;
 }
+
 export default state;
 
 //renderEntireTree();
