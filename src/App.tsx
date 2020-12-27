@@ -9,11 +9,11 @@ import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from './components/Settings/Settings';
 import {StateType, StoreType} from "./redux/state";
+import Sidebar from "./components/Sidebar/Sidebar";
 
 type AppPropsType = {
     state: StateType
-    addPost: () => void
-    updateNewPostText: (newtext: string) => void
+    dispatch: (action: any) => void
 }
 
 function App(props: AppPropsType) {
@@ -26,19 +26,21 @@ function App(props: AppPropsType) {
             <div className='app-wrapper-content'>
                 <Route path='/dialogs'
                        render={() => <Dialogs
-                           state={props.state.messagesPage}/>}/>
+                           dispatch={props.dispatch}
+                           dialogsPage={props.state.dialogsPage}/>}/>
                 <Route path='/profile'
                        render={() => <Profile
                            profilePage={props.state.profilePage}
-                           addPost={props.addPost}
-                           updateNewPostText={props.updateNewPostText}
+                           dispatch={props.dispatch}
                        />}/>
-                <Route path='/News'
+                <Route path='/news'
                        render={() => <News/>}/>
-                <Route path='/Music'
+                <Route path='/music'
                        render={() => <Music/>}/>
-                <Route path='/Settings'
+                <Route path='/settings'
                        render={() => <Settings/>}/>
+                <Route path='/friends'
+                       render={() => <Sidebar/>}/>
             </div>
         </div>
     )

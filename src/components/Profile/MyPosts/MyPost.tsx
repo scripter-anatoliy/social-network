@@ -1,23 +1,38 @@
-import React, {ChangeEvent, createRef} from 'react';
-import e from './MyPost.module.css';
+import React from 'react';
+import { PostType} from '../../../redux/state';
 import Post from "./Post/Post";
+import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../redux/profile-reducer";
 
 
-const MyPost = (props: any) => {
+// export type MyPostType = {
+//     PostType: PostType
+// }
 
 
-    let postElement = props.posts.map((p: { message: any; liked: any; }) => <Post message={p.message}
-                                                                                  liked={p.liked}/>);
+type PropsType = {
+    posts: Array<PostType>
+    newPostText: string
+    dispatch: any
+}
+
+const MyPost = (props: PropsType) => {
+
+
+    let postElement = props.posts.map(p => <Post message={p.message} liked={p.liked}/>);
 
     let newPostElement = React.createRef<HTMLTextAreaElement>()
 
     let addPost = () => {
-        props.addPost()
-        props.updateNewPostText("")
+        props.dispatch(addPostActionCreator())
     }
 
     let onPostChange = () => {
-        props.updateNewPostText(newPostElement.current?.value)
+        let text = newPostElement.current?.value
+        if (text) {
+            let action = updateNewPostTextActionCreator(text)
+            props.dispatch(action)
+        }
+
     }
 
     return (

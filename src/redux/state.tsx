@@ -1,24 +1,29 @@
-type MessagesPageType = {
+import profileReduser from "./profile-reducer";
+import dialogsReducer from "./dialogs-reducer";
+import sidebarReducer from "./sidebar-reducer";
+
+export type DialogsPageType = {
     dialogs: Array<DialogsType>,
-    messages: Array<MessagesType>
+    messages: Array<MessagesType>,
+    newMessageBody: string
 }
 
-type MessagesType = {
+export type MessagesType = {
     id: number,
     message: string
 }
 
-type DialogsType = {
+export type DialogsType = {
     id: number,
     name: string
 }
 
-type ProfilePageType = {
+export type ProfilePageType = {
     posts: Array<PostType>,
     newPostText: string
 }
 
-type PostType = {
+export type PostType = {
     id: number,
     message: string,
     liked: number
@@ -26,19 +31,21 @@ type PostType = {
 
 export type StateType = {
     profilePage: ProfilePageType,
-    messagesPage: MessagesPageType
+    dialogsPage: DialogsPageType,
+    sidebar: any
 }
 
 export type StoreType = {
     _state: StateType
-    addPost: () => void
-    renderEntireTree: (store: StoreType) => void,
-    updateNewPostText: (newText: string) => void
+    getState: () => void
+    _callSubscribe: () => void
+    // addPost: () => void
+    // renderEntireTree: (store: StoreType) => void,
+    // updateNewPostText: (newText: string) => void
     subscribe: (observer: (store: StoreType) => void) => void
+    dispatch: (action: { type: string }) => void
 }
-
-
-let store = {
+let store= {
     _state: {
         profilePage: {
             posts: [
@@ -48,7 +55,7 @@ let store = {
             newPostText: "...message"
 
         },
-        messagesPage: {
+        dialogsPage: {
             dialogs: [
                 {id: 1, name: 'Maxim'},
                 {id: 2, name: 'Evgeniy'},
@@ -61,11 +68,18 @@ let store = {
                 {id: 1, message: 'Hello'},
                 {id: 2, message: 'how are you?'},
                 {id: 3, message: 'Hello my friend! How are you?'},
-
-            ]
-        }
+            ],
+            newMessageBody: ""
+        },
+        sidebar: {}
     },
-    addPost() {
+    getState() {
+        return this._state
+    },
+    _callSubscribe(state: StateType) {
+        console.log("yoyoyo")
+    },
+/*    addPost() {
         let newPost = {
             id: 3,
             message: this._state.profilePage.newPostText,
@@ -73,21 +87,30 @@ let store = {
         }
         this._state.profilePage.posts.push(newPost)
         this._state.profilePage.newPostText = ""
-        this.renderEntireTree(store);
+        this._callSubscribe(this._state);
     },
     renderEntireTree(store: StoreType) {
         console.log("hay")
     },
     updateNewPostText(newText: string) {
-
-debugger
         this._state.profilePage.newPostText = newText;
-        this.renderEntireTree(store);
-    },
+        this._callSubscribe(this._state);
+    },*/
     subscribe(observer: any) {
-        this.renderEntireTree = observer;
-    }
+        this._callSubscribe = observer;
+    },
+
+    dispatch(action: any) {
+
+        this._state.profilePage = profileReduser(this._state.profilePage, action);
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+        this._state.sidebar = sidebarReducer(this._state.sidebar, action);
+
+            this._callSubscribe(this._state);
+        }
 }
+
+
 export default store;
 
 //renderEntireTree();
