@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import store, {StateType, StoreType} from './redux/state';
+import store, {StateType, StoreType} from './redux/store';
 import ReactDOM from "react-dom";
 import {BrowserRouter} from "react-router-dom";
 import App from "./App";
@@ -19,7 +19,10 @@ let renderEntireTree = (state: StateType) => {
 
 renderEntireTree(store.getState());
 
-store.subscribe(renderEntireTree);
+store.subscribe(() => {
+    let state = store.getState()
+    renderEntireTree(state)
+});
 
 
 // If you want to start measuring performance in your app, pass a function

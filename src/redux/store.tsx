@@ -1,4 +1,4 @@
-import profileReduser from "./profile-reducer";
+import profileReducer from "./profile-reducer";
 import dialogsReducer from "./dialogs-reducer";
 import sidebarReducer from "./sidebar-reducer";
 
@@ -29,10 +29,15 @@ export type PostType = {
     liked: number
 }
 
+export type FriendsType = {
+    id: number,
+    name: string
+}
+
 export type StateType = {
     profilePage: ProfilePageType,
     dialogsPage: DialogsPageType,
-    sidebar: any
+    sidebar: Array<FriendsType>
 }
 
 export type StoreType = {
@@ -45,7 +50,7 @@ export type StoreType = {
     subscribe: (observer: (store: StoreType) => void) => void
     dispatch: (action: { type: string }) => void
 }
-let store= {
+let store = {
     _state: {
         profilePage: {
             posts: [
@@ -71,7 +76,11 @@ let store= {
             ],
             newMessageBody: ""
         },
-        sidebar: {}
+        sidebar: [
+            {id: 1, name: 'Maxim'},
+            {id: 2, name: 'Evgeniy'},
+            {id: 3, name: 'Sergey'},
+        ]
     },
     getState() {
         return this._state
@@ -79,37 +88,36 @@ let store= {
     _callSubscribe(state: StateType) {
         console.log("yoyoyo")
     },
-/*    addPost() {
-        let newPost = {
-            id: 3,
-            message: this._state.profilePage.newPostText,
-            liked: 0
-        }
-        this._state.profilePage.posts.push(newPost)
-        this._state.profilePage.newPostText = ""
-        this._callSubscribe(this._state);
-    },
-    renderEntireTree(store: StoreType) {
-        console.log("hay")
-    },
-    updateNewPostText(newText: string) {
-        this._state.profilePage.newPostText = newText;
-        this._callSubscribe(this._state);
-    },*/
+    /*    addPost() {
+            let newPost = {
+                id: 3,
+                message: this._state.profilePage.newPostText,
+                liked: 0
+            }
+            this._state.profilePage.posts.push(newPost)
+            this._state.profilePage.newPostText = ""
+            this._callSubscribe(this._state);
+        },
+        renderEntireTree(store: StoreType) {
+            console.log("hay")
+        },
+        updateNewPostText(newText: string) {
+            this._state.profilePage.newPostText = newText;
+            this._callSubscribe(this._state);
+        },*/
     subscribe(observer: any) {
         this._callSubscribe = observer;
     },
 
     dispatch(action: any) {
 
-        this._state.profilePage = profileReduser(this._state.profilePage, action);
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
         this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
         this._state.sidebar = sidebarReducer(this._state.sidebar, action);
 
-            this._callSubscribe(this._state);
-        }
+        this._callSubscribe(this._state);
+    }
 }
-
 
 export default store;
 

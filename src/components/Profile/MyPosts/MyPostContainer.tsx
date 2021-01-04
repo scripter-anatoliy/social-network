@@ -23,7 +23,7 @@ const MyPost = (props: PropsType) => {
     let newPostElement = React.createRef<HTMLTextAreaElement>()
 
     let addPost = () => {
-
+        
         props.dispatch(addPostActionCreator())
     }
 
