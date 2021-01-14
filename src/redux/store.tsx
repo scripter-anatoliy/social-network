@@ -2,6 +2,7 @@ import profileReducer from "./profile-reducer";
 import dialogsReducer from "./dialogs-reducer";
 import sidebarReducer from "./sidebar-reducer";
 
+
 export type DialogsPageType = {
     dialogs: Array<DialogsType>,
     messages: Array<MessagesType>,
@@ -45,7 +46,7 @@ export type StoreType = {
     getState: () => void
     _callSubscribe: () => void
     // addPost: () => void
-    // renderEntireTree: (store: StoreType) => void,
+    //renderEntireTree: (store: StoreType) => void,
     // updateNewPostText: (newText: string) => void
     subscribe: (observer: (store: StoreType) => void) => void
     dispatch: (action: { type: string }) => void
@@ -88,23 +89,23 @@ let store = {
     _callSubscribe(state: StateType) {
         console.log("yoyoyo")
     },
-    /*    addPost() {
-            let newPost = {
-                id: 3,
-                message: this._state.profilePage.newPostText,
-                liked: 0
-            }
-            this._state.profilePage.posts.push(newPost)
-            this._state.profilePage.newPostText = ""
-            this._callSubscribe(this._state);
-        },
-        renderEntireTree(store: StoreType) {
-            console.log("hay")
-        },
-        updateNewPostText(newText: string) {
-            this._state.profilePage.newPostText = newText;
-            this._callSubscribe(this._state);
-        },*/
+        // addPost() {
+        //     let newPost = {
+        //         id: 3,
+        //         message: this._state.profilePage.newPostText,
+        //         liked: 0
+        //     }
+        //     this._state.profilePage.posts.push(newPost)
+        //     this._state.profilePage.newPostText = ""
+        //     this._callSubscribe(this._state);
+        // },
+        // renderEntireTree(store: StoreType) {
+        //     console.log("hay")
+        // },
+        // updateNewPostText(newText: string) {
+        //     this._state.profilePage.newPostText = newText;
+        //     this._callSubscribe(this._state);
+        // },
     subscribe(observer: any) {
         this._callSubscribe = observer;
     },

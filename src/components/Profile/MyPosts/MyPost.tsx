@@ -1,7 +1,6 @@
 import React from 'react';
-import { PostType} from '../../../redux/store';
+import {PostType} from '../../../redux/store';
 import Post from "./Post/Post";
-import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../redux/profile-reducer";
 
 
 // export type MyPostType = {
@@ -11,9 +10,11 @@ import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../red
 
 type PropsType = {
     posts: Array<PostType>
+    newPostTextHandler: (text: string) => void
+    addPost: () => void
     newPostText: string
-    dispatch: any
 }
+
 
 const MyPost = (props: PropsType) => {
 
@@ -23,17 +24,14 @@ const MyPost = (props: PropsType) => {
     let newPostElement = React.createRef<HTMLTextAreaElement>()
 
     let addPost = () => {
-
-        props.dispatch(addPostActionCreator())
+        props.addPost()
     }
 
     let onPostChange = () => {
-        let text = newPostElement.current?.value
+        let text = newPostElement.current?.value;
         if (text) {
-            let action = updateNewPostTextActionCreator(text)
-            props.dispatch(action)
+            props.newPostTextHandler(text)
         }
-
     }
 
     return (

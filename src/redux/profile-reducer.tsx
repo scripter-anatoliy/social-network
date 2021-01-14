@@ -1,18 +1,8 @@
 import {ProfilePageType} from "./store";
 
-export type DispatchProfileActionsType = AddPostActionType | UpdateNewPostTexActionType
-
-type AddPostActionType = {
-    type: 'ADD-POST'
-}
-
-type UpdateNewPostTexActionType = {
-    type: 'UPDATE-NEW-POST-TEXT'
-    newText: string
-}
-
-const ADD_POST = "ADD-POST";
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
+export type ProfileActionsType =
+    ReturnType<typeof addPostActionCreator>
+    | ReturnType<typeof updateNewPostTextActionCreator>
 
 
 let initialState = {
@@ -22,30 +12,35 @@ let initialState = {
     ],
     newPostText: "...message"
 }
-const profileReducer = (state: ProfilePageType = initialState, action: any) => {
+const profileReducer = (state: ProfilePageType = initialState, action: ProfileActionsType) => {
     switch (action.type) {
-        case ADD_POST:
+        case "ADD-POST": {
             let newPost = {
                 id: 3,
                 message: state.newPostText,
                 liked: 0
             }
-            state.posts.push(newPost)
-            state.newPostText = ""
-
-            return state
-        case UPDATE_NEW_POST_TEXT:
-            state.newPostText = action.newText;
-
-            return state
+            return {
+                ...state,
+                posts: [...state.posts, newPost],
+                newPostText: ""
+            }
+        }
+        case
+            "UPDATE-NEW-POST-TEXT"
+        :
+            return {
+                ...state,
+                newPostText: action.newText
+            }
         default:
             return state
+        }
     }
-}
 
-export const addPostActionCreator = () => ({type: ADD_POST})
-export const updateNewPostTextActionCreator = (text: string) =>
-    ({type: UPDATE_NEW_POST_TEXT, newText: text})
+    export const addPostActionCreator = () => ({type: "ADD-POST"} as const)
+    export const updateNewPostTextActionCreator = (text: string) =>
+        ({type: 'UPDATE-NEW-POST-TEXT', newText: text} as const)
 
 
-export default profileReducer;
+    export default profileReducer;

@@ -3,20 +3,21 @@ import './App.css';
 import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
 import Profile from "./components/Profile/Profile";
-import Dialogs from "./components/Dialogs/Dialogs";
 import {Route} from "react-router-dom";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from './components/Settings/Settings';
-import {StateType} from "./redux/store";
 import Sidebar from "./components/Sidebar/Sidebar";
+import DialogsContainer from "./components/Dialogs/DialogsContainer";
+import UsersContainer, {UsersContainerType} from "./components/Users/UsersContainer";
 
-type AppPropsType = {
-    state: StateType
-    dispatch: (action: any) => void
-}
+// type AppPropsType = {
+//     state: StateType
+//     dispatch: (action: any) => void
+//     store: RStoreType
+// }
 
-function App(props: AppPropsType) {
+function App() {
 
     return (
         <div className='app-wrapper'>
@@ -24,14 +25,11 @@ function App(props: AppPropsType) {
             <Navbar/>
             <div className='app-wrapper-content'>
                 <Route path='/dialogs'
-                       render={() => <Dialogs
-                           dispatch={props.dispatch}
-                           dialogsPage={props.state.dialogsPage}/>}/>
+                       render={() => <DialogsContainer/>}/>
                 <Route path='/profile'
-                       render={() => <Profile
-                           profilePage={props.state.profilePage}
-                           dispatch={props.dispatch}
-                       />}/>
+                       render={() => <Profile/>}/>
+                <Route path='/users'
+                       render={() => <UsersContainer/>}/>
                 <Route path='/news'
                        render={() => <News/>}/>
                 <Route path='/music'

@@ -1,7 +1,10 @@
 import React from 'react';
-import { PostType} from '../../../redux/store';
-import Post from "./Post/Post";
+
 import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../redux/profile-reducer";
+import MyPost from "./MyPost";
+import {RootState} from "../../../redux/redux-store";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 
 
 // export type MyPostType = {
@@ -9,53 +12,42 @@ import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../red
 // }
 
 
-type PropsType = {
-    posts: Array<PostType>
-    newPostText: string
-    dispatch: any
-}
 
-const MyPost = (props: PropsType) => {
+// const MyPostContainer = (props: PropsType) => {
+//
+//     let addPost = () => {
+//         props.store.dispatch(addPostActionCreator())
+//     }
+//
+//     let onPostChange = (text: string) => {
+//         let action = updateNewPostTextActionCreator(text)
+//         props.store.dispatch(action)
+//
+//     }
+//
+//     return <MyPost newPostText={props.store.getState().profileReducer.newPostText}
+//                    addPost={addPost}
+//                    newPostTextHandler={onPostChange}
+//                    posts={props.store.getState().profileReducer.posts}/>
+//
+// }
 
-
-    let postElement = props.posts.map(p => <Post message={p.message} liked={p.liked}/>);
-
-    let newPostElement = React.createRef<HTMLTextAreaElement>()
-
-    let addPost = () => {
-        
-        props.dispatch(addPostActionCreator())
-    }
-
-    let onPostChange = () => {
-        let text = newPostElement.current?.value
-        if (text) {
+let mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        newPostTextHandler: (text: string) => {
             let action = updateNewPostTextActionCreator(text)
-            props.dispatch(action)
-        }
-
+            dispatch(action)
+        },
+        addPost: () => {dispatch(addPostActionCreator())}
     }
-
-    return (
-        <div>
-            <div>
-                My post
-                <div>
-                    <div>
-                        <textarea onChange={onPostChange} ref={newPostElement} value={props.newPostText}/>
-                    </div>
-                    <div>
-                        <button onClick={addPost}>Add post</button>
-                    </div>
-                    <div>
-                        <button>Remove</button>
-                    </div>
-                </div>
-            </div>
-            <div>
-                {postElement}
-            </div>
-        </div>
-    )
 }
-export default MyPost;
+
+let mapStateToProps = (state: RootState) => {
+    return {
+        posts: state.profilePage.posts,
+        newPostText: state.profilePage.newPostText
+    }
+}
+
+const MyPostContainer = connect(mapStateToProps, mapDispatchToProps)(MyPost)
+export default MyPostContainer;
