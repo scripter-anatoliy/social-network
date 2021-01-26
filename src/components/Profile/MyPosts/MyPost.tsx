@@ -1,12 +1,6 @@
 import React from 'react';
-import {PostType} from '../../../redux/store';
 import Post from "./Post/Post";
-
-
-// export type MyPostType = {
-//     PostType: PostType
-// }
-
+import {PostType} from "../../../redux/profile-reducer";
 
 type PropsType = {
     posts: Array<PostType>
@@ -15,9 +9,7 @@ type PropsType = {
     newPostText: string
 }
 
-
 const MyPost = (props: PropsType) => {
-
 
     let postElement = props.posts.map(p => <Post message={p.message} liked={p.liked}/>);
 

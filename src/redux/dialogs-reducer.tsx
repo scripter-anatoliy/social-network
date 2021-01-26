@@ -1,7 +1,18 @@
-import {DialogsPageType} from "./store";
-
-
 type DialogsActionsType = ReturnType<typeof sendMessageCreator> | ReturnType<typeof updateNewMessageBodyCreator>
+
+export type MessagesType = {
+    id: number,
+    message: string
+}
+export type DialogsType = {
+    id: number,
+    name: string
+}
+export type DialogsPageType = {
+    dialogs: Array<DialogsType>,
+    messages: Array<MessagesType>,
+    newMessageBody: string
+}
 
 let initialState = {
     dialogs: [
