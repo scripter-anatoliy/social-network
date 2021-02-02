@@ -1,8 +1,14 @@
 import React from 'react';
 import Preloader from "../../common/Preloader";
+import {ProfileUserType} from "../../../redux/profile-reducer";
+import {PropsType} from "../ProfileContainer";
 
 
-const ProfileInfo = (props: any) => {
+type A = {
+    profile: ProfileUserType | null
+}
+
+const ProfileInfo = (props:A) => {
     if (!props.profile) {
         return <Preloader/>
     }
