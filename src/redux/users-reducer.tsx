@@ -1,12 +1,14 @@
+import {UsersAPI} from "../api/api";
+import {Action, Dispatch} from "redux";
+
 export type UsersActionsType =
-    ReturnType<typeof follow>
-    | ReturnType<typeof unfollow>
+    ReturnType<typeof followSuccess>
+    | ReturnType<typeof unfollowSuccess>
     | ReturnType<typeof setUsers>
     | ReturnType<typeof setCurrentPage>
     | ReturnType<typeof setTotalUsersCount>
     | ReturnType<typeof toggleIsFetching>
     | ReturnType<typeof toggleIsFollowingProgress>
-
 
 export type locationType = {
     city: string,
@@ -78,7 +80,6 @@ const usersReducer = (state: initialStateType = initialState, action: UsersActio
                     return u
                 })
             }
-
         case 'UNFOLLOW':
             return {
                 ...state,
@@ -88,7 +89,6 @@ const usersReducer = (state: initialStateType = initialState, action: UsersActio
                     return u
                 })
             }
-
         case 'SET_USERS':
             return {
                 ...state,
@@ -106,7 +106,7 @@ const usersReducer = (state: initialStateType = initialState, action: UsersActio
             return {
                 ...state, isFetching: action.isFetching
             }
-            case 'TOGGLE_IS_FOLLOWING_PROGRESS':
+        case 'TOGGLE_IS_FOLLOWING_PROGRESS':
             return {
                 ...state,
                 followingInProgress: action.isFetching
@@ -119,8 +119,8 @@ const usersReducer = (state: initialStateType = initialState, action: UsersActio
     }
 }
 
-export const follow = (userId: number) => ({type: 'FOLLOW', userId} as const)
-export const unfollow = (userId: number) => ({type: 'UNFOLLOW', userId} as const)
+export const followSuccess = (userId: number) => ({type: 'FOLLOW', userId} as const)
+export const unfollowSuccess = (userId: number) => ({type: 'UNFOLLOW', userId} as const)
 export const setUsers = (users: Array<UserType>) => ({type: 'SET_USERS', users} as const)
 export const setCurrentPage = (currentPage: number) => ({type: 'SET_CURRENT_PAGE', currentPage} as const)
 export const setTotalUsersCount = (totalUsersCount: number) => ({
@@ -136,5 +136,43 @@ export const toggleIsFollowingProgress = (isFetching: boolean, userId: number) =
     isFetching, userId
 } as const)
 
+
+// Thunk - Функция санки
+export const getUsers = (currentPage: number, pageSize: number) => {
+    return (dispatch: Dispatch<UsersActionsType>) => {
+        dispatch(toggleIsFetching(true))
+        UsersAPI.getUsers(currentPage, pageSize).then(data => {
+            dispatch(toggleIsFetching(false))
+            dispatch(setUsers(data.items))
+            dispatch(setTotalUsersCount(data.totalCount))
+        })
+    }
+}
+
+export const follow = (userId: number) => {
+    return (dispatch: Dispatch<UsersActionsType>) => {
+        dispatch(toggleIsFollowingProgress(true, userId))
+        UsersAPI.follow(userId)
+            .then(response => {
+                if (response.data.resultCode === 0) {
+                    dispatch(followSuccess(userId))
+                }
+
+            }).finally(()=>dispatch(toggleIsFollowingProgress(false, userId)))
+    }
+}
+
+export const unfollow = (userId: number) => {
+    return (dispatch: Dispatch<UsersActionsType>) => {
+        dispatch(toggleIsFollowingProgress(true, userId))
+        UsersAPI.unFollow(userId)
+            .then(response => {
+                if (response.data.resultCode === 0) {
+                    dispatch(unfollowSuccess(userId))
+                }
+                dispatch(toggleIsFollowingProgress(false, userId))
+            })
+    }
+}
 
 export default usersReducer;

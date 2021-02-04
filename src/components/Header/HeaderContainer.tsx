@@ -1,11 +1,10 @@
 import React from 'react';
 import Header from "./Header";
 import axios from "axios";
-import {setAuthUserData, UserDataType} from "../../redux/auth-reducer";
+import {getAuthUserData, setAuthUserData} from "../../redux/auth-reducer";
 import {RootState} from "../../redux/redux-store";
 import {connect, ConnectedProps} from "react-redux";
-import {ProfileUserType} from "../../redux/profile-reducer";
-import {RouteComponentProps} from "react-router-dom";
+import {authAPI} from "../../api/api";
 
 
 // type MapStatePropsType = {
@@ -22,12 +21,7 @@ import {RouteComponentProps} from "react-router-dom";
 
 class HeaderContainer extends React.Component<PropsType> {
     componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {withCredentials: true})
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    this.props.setAuthUserData(response.data.data)
-                }
-            })
+        this.props.getAuthUserData()
     }
 
     render() {
@@ -42,7 +36,7 @@ let mapStateToProps = (state: RootState) => ({
     login: state.auth.data.login
 })
 
-let connector = connect(mapStateToProps, {setAuthUserData});
+let connector = connect(mapStateToProps, {getAuthUserData});
 
 type PropsType = ConnectedProps<typeof connector>
 

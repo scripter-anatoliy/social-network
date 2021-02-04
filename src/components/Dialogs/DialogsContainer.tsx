@@ -5,12 +5,6 @@ import {connect} from "react-redux";
 import {RootState} from "../../redux/redux-store";
 import {Dispatch} from "redux";
 
-export type DialogsPropsType = {
-    dialogsPage: DialogsPageType
-    updateNewMessageBody: (body: any) => void
-    sendMessage: () => void
-}
-
 // const DialogsContainer = (props: PropsType) => {
 //
 //     let state: RootState = props.store.getState()
@@ -28,10 +22,10 @@ export type DialogsPropsType = {
 //                     dialogsPage={state.dialogsReducer}
 //     />
 // }
-
 let mapStateToProps = (state: RootState) => {
     return {
-        dialogsPage: state.dialogsPage
+        dialogsPage: state.dialogsPage,
+        isAuth: state.auth.isAuth
     }
 }
 let mapDispatchToProps = (dispatch: Dispatch) => {
