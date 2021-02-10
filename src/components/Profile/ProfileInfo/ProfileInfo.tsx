@@ -1,7 +1,6 @@
 import React from 'react';
 import Preloader from "../../common/Preloader";
 import {ProfileUserType} from "../../../redux/profile-reducer";
-import {PropsType} from "../ProfileContainer";
 
 
 type A = {
