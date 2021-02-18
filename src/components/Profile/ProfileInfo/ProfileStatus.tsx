@@ -1,7 +1,6 @@
-import React from 'react';
-import {log} from "util";
+import React, {ChangeEvent} from 'react';
 
-type ProfileStatusType = {
+type ProfileStatusPropsType = {
     status: string
     updateStatus: (status: string) => void
 }
@@ -11,12 +10,13 @@ type ProfileStatusStateType = {
     status: string
 }
 
-class ProfileStatus extends React.Component<ProfileStatusType, any> {
+class ProfileStatus extends React.Component<ProfileStatusPropsType, ProfileStatusStateType> {
 
-    state = {
+    state: ProfileStatusStateType = {
         editMode: false,
         status: this.props.status
     }
+
 
     activateEditMode = () => {
         this.setState({
@@ -30,14 +30,14 @@ class ProfileStatus extends React.Component<ProfileStatusType, any> {
         this.props.updateStatus(this.state.status)
     }
 
-    onStatusChange = (e: any) => {
+    onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
         this.setState({
             status: e.currentTarget.value
         });
     }
 
-    componentDidUpdate(prevProps: Readonly<ProfileStatusType>, prevState: Readonly<any>, snapshot?: any) {
-        if (prevProps.status !== this.props.status){
+    componentDidUpdate(prevProps: ProfileStatusPropsType) {
+        if (prevProps.status !== this.props.status) {
             this.setState({
                 status: this.props.status
             })
