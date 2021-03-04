@@ -1,4 +1,4 @@
-type DialogsActionsType = ReturnType<typeof sendMessageCreator> | ReturnType<typeof updateNewMessageBodyCreator>
+type DialogsActionsType = ReturnType<typeof sendMessageCreator>
 
 export type MessagesType = {
     id: number,
@@ -10,8 +10,7 @@ export type DialogsType = {
 }
 export type DialogsPageType = {
     dialogs: Array<DialogsType>,
-    messages: Array<MessagesType>,
-    newMessageBody: string
+    messages: Array<MessagesType>
 }
 
 let initialState = {
@@ -27,23 +26,21 @@ let initialState = {
         {id: 1, message: 'Hello'},
         {id: 2, message: 'how are you?'},
         {id: 3, message: 'Hello my friend! How are you?'},
-    ],
-    newMessageBody: ""
+    ]
 }
 
 const dialogsReducer = (state: DialogsPageType = initialState, action: DialogsActionsType): DialogsPageType => {
 
     switch (action.type) {
-        case 'UPDATE_NEW_MESSAGE_BODY':
-            return  {
-            ...state,
-                newMessageBody: action.body
-            }
+        // case 'UPDATE_NEW_MESSAGE_BODY':
+        //     return  {
+        //     ...state,
+        //         newMessageBody: action.body
+        //     }
         case 'SEND_MESSAGE':
-            let body = state.newMessageBody;
+            let body = action.newMessageBody;
             return {
                 ...state,
-                newMessageBody: "",
                 messages: [...state.messages, {id: 4, message: body}]
             }
         default:
@@ -51,8 +48,8 @@ const dialogsReducer = (state: DialogsPageType = initialState, action: DialogsAc
     }
 }
 
-export const sendMessageCreator = () => ({type: 'SEND_MESSAGE'} as const)
-export const updateNewMessageBodyCreator = (body: string) =>
-    ({type: 'UPDATE_NEW_MESSAGE_BODY', body: body} as const)
+export const sendMessageCreator = (newMessageBody: string) => ({type: 'SEND_MESSAGE', newMessageBody} as const)
+// export const updateNewMessageBodyCreator = (body: string) =>
+//     ({type: 'UPDATE_NEW_MESSAGE_BODY', body: body} as const)
 
 export default dialogsReducer;
