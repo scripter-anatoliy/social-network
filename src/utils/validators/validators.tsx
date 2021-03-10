@@ -1,4 +1,4 @@
-export const required = (value: any) => {
+export const required = (value: string) => {
     if (value)
         return undefined
 

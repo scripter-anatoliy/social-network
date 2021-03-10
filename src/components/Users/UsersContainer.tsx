@@ -3,7 +3,7 @@ import {follow, getUsers, setCurrentPage, toggleIsFollowingProgress, unfollow} f
 import {RootState} from "../../redux/redux-store";
 import Users from "./Users";
 import React from "react";
-import Preloader from "../common/Preloader";
+import Preloader from "../common/Preloader/Preloader";
 import {WithAuthRedirect} from "../../hoc/WithAuthRedirect";
 import {compose} from "redux";
 import {RouteComponentProps} from "react-router-dom";

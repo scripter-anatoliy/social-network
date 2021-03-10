@@ -3,8 +3,8 @@ import s from './Dialogs.module.css';
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import {DialogsPageType} from "../../redux/dialogs-reducer";
-import {Redirect} from 'react-router-dom';
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import {maxLengthCreator, required} from "../../utils/validators/validators";
 
 
 type DialogsPropsType = {
@@ -41,7 +41,6 @@ const Dialogs = (props: DialogsPropsType) => {
     }
 
 
-
     return (
         <div className={s.dialogs}>
             <div className={s.dialogsItem}>
@@ -55,9 +54,19 @@ const Dialogs = (props: DialogsPropsType) => {
     )
 }
 
+const maxLength50 = maxLengthCreator(50)
+
 const AddMessageForm: React.FC<InjectedFormProps<FormDialogsType>> = (props) => {
+debugger
     return <form onSubmit={props.handleSubmit}>
-        <div><Field component="textarea" name="newMessageBody" placeholder="Enter your message"/></div>
+
+        <div>
+            <Field
+                component="textarea"
+                validate={[required, maxLength50]}
+                name="newMessageBody"
+                placeholder="Enter your message"/>
+        </div>
         <div>
             <button>add user post</button>
         </div>
