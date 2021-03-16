@@ -1,12 +1,13 @@
-import {initialStateType} from "./users-reducer";
 import {authAPI} from "../api/api";
-import {Dispatch} from "redux";
+import {Action, Dispatch} from "redux";
+import {ThunkDispatch} from "redux-thunk";
+import {RootState} from "./redux-store";
 
 export type UsersActionsAuthType =
     ReturnType<typeof setAuthUserData>
 
 export type UserDataType = {
-    id: number | null
+    userId: number | null
     email: string | null
     login: string | null
 
@@ -18,7 +19,7 @@ export type InitialStateType = {
 
 let initialState = {
     data: {
-        id: null,
+        userId: null,
         email: null,
         login: null
     },
@@ -28,8 +29,7 @@ const authReducer = (state: InitialStateType = initialState, action: UsersAction
     switch (action.type) {
         case 'SET_USER_DATA':
             return {
-                ...state, data: {...action.data},
-                isAuth: true
+                ...state, data: {...action.payload}, isAuth: action.isAuth
             }
 
         default:
@@ -37,15 +37,37 @@ const authReducer = (state: InitialStateType = initialState, action: UsersAction
     }
 }
 
-export const setAuthUserData = (data: UserDataType) => ({type: 'SET_USER_DATA', data} as const)
+export const setAuthUserData = (userId: number | null, email: string | null, login: string | null, isAuth: boolean) => (
+    {type: 'SET_USER_DATA', payload: {userId, email, login}, isAuth} as const)
 export const getAuthUserData = () => {
     return (dispatch: Dispatch<UsersActionsAuthType>) => {
+
         authAPI.me().then(response => {
             if (response.data.resultCode === 0) {
-                dispatch(setAuthUserData(response.data.data))
+                let {id, email, login} = response.data.data
+                dispatch(setAuthUserData(id, email, login, true))
             }
         })
     }
+}
+
+export const login = (email: string, password: string, rememberMe: boolean) => {
+    return (dispatch: ThunkDispatch<RootState, undefined, Action>) => {
+        authAPI.login(email, password, rememberMe).then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(getAuthUserData())
+            }
+        })
+    }
+}
+export const logout = () => (dispatch: Dispatch<UsersActionsAuthType>) => {
+
+    authAPI.logout().then(response => {
+
+        if (response.data.resultCode === 0) {
+            dispatch(setAuthUserData(null, null, null, false))
+        }
+    })
 }
 
 export default authReducer;

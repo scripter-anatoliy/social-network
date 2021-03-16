@@ -57,7 +57,6 @@ const Dialogs = (props: DialogsPropsType) => {
 const maxLength50 = maxLengthCreator(50)
 
 const AddMessageForm: React.FC<InjectedFormProps<FormDialogsType>> = (props) => {
-debugger
     return <form onSubmit={props.handleSubmit}>
 
         <div>

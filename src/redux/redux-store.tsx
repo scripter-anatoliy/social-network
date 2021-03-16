@@ -13,7 +13,6 @@ let reducers = combineReducers({
     sideBarPage: sidebarReducer,
     userPage: usersReducer,
     auth: authReducer,
-
     form: formReducer
 })
 export type RootState = ReturnType<typeof reducers>
