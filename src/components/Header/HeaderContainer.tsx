@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from "./Header";
-import {getAuthUserData, logout} from "../../redux/auth-reducer";
+import {logout} from "../../redux/auth-reducer";
 import {RootState} from "../../redux/redux-store";
 import {connect, ConnectedProps} from "react-redux";
 
@@ -18,9 +18,7 @@ import {connect, ConnectedProps} from "react-redux";
 // export type PropsType = RouteComponentProps<PathParamsType> & OnnPropsType
 
 class HeaderContainer extends React.Component<PropsType> {
-    componentDidMount() {
-        this.props.getAuthUserData()
-    }
+
 
     render() {
         return <Header login={this.props.login}
@@ -35,7 +33,7 @@ let mapStateToProps = (state: RootState) => ({
     login: state.auth.data.login
 })
 
-let connector = connect(mapStateToProps, {getAuthUserData, logout});
+let connector = connect(mapStateToProps, {logout});
 
 type PropsType = ConnectedProps<typeof connector>
 

@@ -138,7 +138,7 @@ export const toggleIsFollowingProgress = (isFetching: boolean, userId: number) =
 
 
 // Thunk - Функция санки
-export const getUsers = (currentPage: number, pageSize: number) => {
+export const requestUsers = (currentPage: number, pageSize: number) => {
     return (dispatch: Dispatch<UsersActionsType>) => {
         dispatch(toggleIsFetching(true))
         UsersAPI.getUsers(currentPage, pageSize).then(data => {

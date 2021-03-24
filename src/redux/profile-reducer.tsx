@@ -27,7 +27,7 @@ export type ProfileUserType = {
     lookingForAJob: boolean,
     lookingForAJobDescription: string,
     fullName: string,
-    userId: string,
+    userId: number,
     photos: PhotosProfileType
 }
 export type PostType = {
@@ -92,7 +92,7 @@ export const addPostActionCreator = (newPostText: string) => ({type: "ADD-POST",
 export const setUserProfile = (profile: ProfileUserType | null) => ({type: "SET_USER_PROFILE", profile} as const)
 export const setStatus = (status: string) => ({type: "SET_STATUS", status} as const)
 
-export const getUserProfile = (userId: string) => {
+export const getUserProfile = (userId: number) => {
     return (dispatch: Dispatch<ProfileActionsType>) => {
         UsersAPI.getProfile(userId).then(response => {
             dispatch(setUserProfile(response.data))
@@ -100,7 +100,7 @@ export const getUserProfile = (userId: string) => {
     }
 }
 
-export const getStatus = (userId: string) => {
+export const getStatus = (userId: number) => {
     return (dispatch: Dispatch<ProfileActionsType>) => {
         ProfileAPI.getStatus(userId).then(response => {
             dispatch(setStatus(response.data))

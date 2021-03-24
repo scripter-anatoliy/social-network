@@ -14,14 +14,15 @@ type PathParamsType = {
 
 type MapStatePropsType = {
     profile: ProfileUserType | null
-    isAuth?: boolean
+    isAuth: boolean
     status: string
+    authorizedUserId: number | null
 }
 
 type MapDispatchPropsType = {
-    getUserProfile: (userId: string) => void
-    getStatus: (userId: string) => void
-    updateStatus: (userId: string) => void
+    getUserProfile: (userId: number) => void
+    getStatus: (userId: number) => void
+    updateStatus: (status: string) => void
 }
 
 export type OnnPropsType = MapStatePropsType & MapDispatchPropsType
@@ -34,12 +35,14 @@ class ProfileContainer extends React.Component<PropsType> {
     componentDidMount() {
         let userId = this.props.match.params.userId
         if (!userId) {
-            userId = '13617'
+            userId = String(this.props.authorizedUserId)
+            //this.props.history.push("/login")
+            userId = "13617"
         }
-        this.props.getUserProfile(userId)
-       //
-            this.props.getStatus(userId)
-       // },1000)
+        this.props.getUserProfile(+userId)
+        //
+        this.props.getStatus(+userId)
+        // },1000)
 
     }
 
@@ -47,14 +50,17 @@ class ProfileContainer extends React.Component<PropsType> {
 
 
         return (
-            <Profile {...this.props} profile={this.props.profile} status={this.props.status} updateStatus={this.props.updateStatus}/>
+            <Profile {...this.props} profile={this.props.profile} status={this.props.status}
+                     updateStatus={this.props.updateStatus}/>
         )
     }
 }
 
 let mapStateToProps = (state: RootState): MapStatePropsType => ({
     profile: state.profilePage.profile,
-    status: state.profilePage.status
+    status: state.profilePage.status,
+    authorizedUserId: state.auth.data.userId,
+    isAuth: state.auth.isAuth
 })
 
 export default compose<React.ComponentType>(
