@@ -6,6 +6,7 @@ export type ProfileActionsType =
     | ReturnType<typeof updateNewPostTextActionCreator>
     | ReturnType<typeof setUserProfile>
     | ReturnType<typeof setStatus>
+    | ReturnType<typeof deletePost>
 
 export type ContactsProfileType = {
     facebook: string,
@@ -66,6 +67,12 @@ const profileReducer = (state: ProfilePageType = initialState, action: ProfileAc
                 // newPostText: ""
             }
         }
+        case "DELETE-POST": {
+            return {
+                ...state,
+                posts: state.posts.filter(p => p.id !== action.postID)
+            }
+        }
         // case
         // "UPDATE-NEW-POST-TEXT"
         // :
@@ -78,7 +85,7 @@ const profileReducer = (state: ProfilePageType = initialState, action: ProfileAc
                 ...state,
                 profile: action.profile
             }
-            case "SET_STATUS":
+        case "SET_STATUS":
             return {
                 ...state,
                 status: action.status
@@ -91,6 +98,7 @@ const profileReducer = (state: ProfilePageType = initialState, action: ProfileAc
 export const addPostActionCreator = (newPostText: string) => ({type: "ADD-POST", newPostText} as const)
 export const setUserProfile = (profile: ProfileUserType | null) => ({type: "SET_USER_PROFILE", profile} as const)
 export const setStatus = (status: string) => ({type: "SET_STATUS", status} as const)
+export const deletePost = (postID: number) => ({type: "DELETE-POST", postID} as const)
 
 export const getUserProfile = (userId: number) => {
     return (dispatch: Dispatch<ProfileActionsType>) => {
@@ -116,7 +124,7 @@ export const updateStatus = (status: string) => {
                     dispatch(setStatus(status))
                 }
 
-        })
+            })
     }
 }
 
