@@ -44,7 +44,6 @@ class ProfileStatus extends React.Component<ProfileStatusPropsType, ProfileStatu
         }
     }
 
-
     render() {
         return (
             <div>

@@ -43,6 +43,7 @@ let initialState = {
     currentPage: 1,
     isFetching: true,
     followingInProgress: []
+
     //     [ {
     //         id: 1,
     //         photoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGliH9EySG7AvSNCVfWmWXJP_5JQkUiuTA8Q&usqp=CAU',

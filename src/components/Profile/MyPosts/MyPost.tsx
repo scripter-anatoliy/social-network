@@ -17,8 +17,8 @@ export type FormMyPostType = {
 }
 
 
-const MyPost = (props: PropsType) => {
-
+const MyPost = React.memo((props: PropsType) => {
+    console.log("yo")
     let postElement = props.posts.map(p => <Post message={p.message} liked={p.liked}/>);
 
     //let newPostElement = React.createRef<HTMLTextAreaElement>()
@@ -46,7 +46,7 @@ const MyPost = (props: PropsType) => {
             </div>
         </div>
     )
-}
+});
 
 const maxLength10 = maxLengthCreator(10)
 

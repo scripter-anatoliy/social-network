@@ -78,6 +78,7 @@ const mapStateToProps = (state:RootState): MapStateToPropsType => ({
 //
 // type PropsType = ConnectedProps<typeof connector>
 //
+
 // export default compose<React.ComponentType>(withRouter, connector(App))
 
 export default connect<MapStateToPropsType, MapDispathToProps, {}, RootState>(mapStateToProps, {initializeApp})(App)
